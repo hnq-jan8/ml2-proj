@@ -237,14 +237,23 @@ class Evaluator:
 
         # Calculating and printing some metrics
         acc = accuracy_score(y_test, y_pred)
-        prec = precision_score(y_test, y_pred)
-        rec = recall_score(y_test, y_pred)
-        f1 = f1_score(y_test, y_pred)
+        prec = precision_score(y_test, y_pred, average = 'macro')
+        rec = recall_score(y_test, y_pred, average = 'macro')
+        f1 = f1_score(y_test, y_pred, average = 'macro')
         print(f"Accuracy: {acc}")
         print(f"Precision: {prec}")
         print(f"Recall: {rec}")
         print(f"F1-score: {f1}")
-
+        data = {"Metrics":['Accuracy', 'Precision', 'Recall', 'F1-score'],
+                "Values": [acc,prec,rec,f1]}
+        df = pd.DataFrame(data = data)
+        plt.bar(df["Metrics"],df['Values'])
+        plt.title('Evaluation Metrics')
+        plt.xlabel('Metric')
+        plt.ylabel('Score')
+        for i , v in enumerate(df['Values']):
+            plt.text(i, v, f"{v:.2f}", ha='left', va='center')
+        plt.show()
         # Plotting and showing the confusion matrix
         cm = confusion_matrix(y_test, y_pred)
         plt.imshow(cm, cmap="Blues")
@@ -339,5 +348,9 @@ if __name__ == "__main__":
             y_pred = np.argmax(y_pred, axis = 1)
             y_test = np.argmax(y_test, axis = 1)
             print(accuracy_score(y_test,y_pred))
+        if choice == 6:
+            file_name = input('select a model: ')
+            evaluator = Evaluator(filename = file_name)
+            evaluator.evaluate(x_test,y_test)
         else:
             break
