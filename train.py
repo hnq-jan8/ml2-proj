@@ -7,7 +7,7 @@ import os
 from sklearn.manifold import TSNE
 from sklearn.decomposition import TruncatedSVD
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay, f1_score, recall_score, precision_score, accuracy_score
+from sklearn.metrics import classification_report, confusion_matrix, f1_score, plot_confusion_matrix, recall_score, precision_score, accuracy_score
 from keras.utils import to_categorical
 from keras.models import load_model, Model
 from keras.callbacks import EarlyStopping, ModelCheckpoint
@@ -55,7 +55,7 @@ class Preprocessing:
 
         tsne = TSNE(n_components=2, perplexity=30, init='random', learning_rate=200)
         print('fitting tsne')
-        # Transform the training and test data using t-SNE on top of TSVD
+        # Transform the training and test data using t-SNE on top of TSVD 
         X_train_tsne = tsne.fit_transform(X_train_tsvd)
         X_test_tsne = tsne.fit_transform(X_test_tsvd)
         return X_train_tsne , X_test_tsne
@@ -118,7 +118,7 @@ class DecisionTree:
     def __init__(self,):
         # Initialize the model with optional parameters
         self.model = DecisionTreeClassifier()
-
+        
 
     def fit(self, X_train, y_train):
         # Train the model on the training data
@@ -271,7 +271,7 @@ if __name__ == "__main__":
             print('fitting model')
             dt.fit(x_train, y_train)
 
-
+            
             # Save the model to dt.joblib file
             dt.save("decisiontree.joblib")
 
@@ -279,7 +279,7 @@ if __name__ == "__main__":
             dt.load("decisiontree.joblib")
 
             # Predict the labels for the transformed test data
-
+            
             y_pred = dt.predict(x_test)
             print(accuracy_score(y_test,y_pred))
         if choice == 2:
